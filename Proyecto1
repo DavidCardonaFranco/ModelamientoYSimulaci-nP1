@@ -1,0 +1,49 @@
+#Librerías
+import matplotlib.pyplot as plt
+import numpy as np
+from pylab import *
+
+#Inicio Funciones
+#Inicialización de variables
+def initialize():
+  global a ,K, next_x, x, x_result, y, next_y, y_result
+
+  a=1.1
+  K=10      #Capacidad de carga
+  x = 1     #Población inicial
+
+  x_result=[]
+  y_result=[]
+
+def update():
+  global a ,K, next_x, x, x_result, y, next_y, y_result
+
+  r = a - 1
+  y = 0.01
+  d = 0.7
+  next_x = (-((r)/K)*x + a)*x #Crecimiento
+  next_y = (-((d-1)/K)*y + d)*y #Decrecimiento
+  x = next_x
+  y = next_y
+
+def observe():
+  global a ,K, next_x, x, x_result, y, next_y, y_result
+
+  x_result.append(x)
+  y_result.append(y)
+
+
+initialize()
+for step in range(50):
+  update()
+  observe()
+
+
+print(len(x_result))
+
+
+fig3 = plot(x_result + y_result)
+plt.title('Crecimiento Poblacional')
+plt.xlabel('Tiempo t')
+plt.ylabel('Población Xo')
+plt.show()

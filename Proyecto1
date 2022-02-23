@@ -1,7 +1,10 @@
+#Importamos las herramientas necesarias para realizar las gráficas y las operaciones
 import matplotlib.pyplot as plt
 import numpy as np
 from pylab import *
 
+#Funciones necesarias para:
+#Inicializar los valores
 def initialize():
   global a,K,next_x,x,x_result,next_y,y,y_result,z,z_result
   a = 1.1
@@ -13,7 +16,7 @@ def initialize():
   y_result=[]
   z_result=[]
   
-
+#Definir las fórmulas
 def update():
   global a,K,next_x,x,x_result,next_y,y,y_result,z,z_result
   r = a - 1
@@ -23,19 +26,20 @@ def update():
   x = next_x
   y = next_y
 
+#Añadir cada resultado obtenido de update()
 def observe():
   global a,K,next_x,x,x_result,next_y,y,y_result,z,z_result
   x_result.append(x)
   y_result.append(y)
   z_result.append(z)
 
-
+#Realizar las fórmulas y almacenar su resultado n veces (100 veces)
 initialize()
 for step in range(100):
   update()
   observe()
 
-
+#Mostrar gráficas
 fig = plot(z_result)
 plt.xlabel('Tiempo t(años)')
 plt.ylabel('Pobalción x(miles)')

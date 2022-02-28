@@ -10,8 +10,15 @@ def initialize():
  R = 1       #Recursos
  x = 0.12    #Población inicial de la especie 1
  y = 0.2     #Población inicial de la especie 2
+ #p = 0.2     #Razón de crecimiento de la especie 1
+ #d = 0.1     #Razón de crecimiento de la especie 2 
+
+ #p = 0.1     #Razón de crecimiento de la especie 1
+ #d = 0.2     #Razón de crecimiento de la especie 2 
+
  p = 0.2     #Razón de crecimiento de la especie 1
- d = 0.1     #Razón de crecimiento de la especie 2 
+ d = 0.2     #Razón de crecimiento de la especie 2 
+
 
  x_result = []
  y_result = []
@@ -38,11 +45,17 @@ for step in range(10):
 
 fig1 = plot(x_result, color="r")
 fig2 = plot(y_result, color="g")
+plt.xlabel('Tiempo t')
+plt.ylabel('Población')
 plt.show()
 
 
 fig1 = plot(x_result, color="r")
+plt.xlabel('Tiempo t')
+plt.ylabel('Población')
 plt.show()
 
 fig2 = plot(y_result, color="g")
+plt.xlabel('Tiempo t')
+plt.ylabel('Población')
 plt.show()

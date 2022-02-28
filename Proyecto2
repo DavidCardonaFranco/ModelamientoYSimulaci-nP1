@@ -6,48 +6,43 @@ from pylab import *
 #Funciones necesarias para:
 #Inicializar los valores
 def initialize():
-  global R,d,p,next_x,x,x_result,next_y,y,y_result
-  R = 0.12   #Recursos
-  x = 0.5     #Población inicial de la presa
-  y = 0.35    #Población inicial del depredador
+ global x,y,x_result,y_result,p,d,R
+ R = 1       #Recursos
+ x = 0.12    #Población inicial de la presa
+ y = 0.2     #Población inicial del depredador
+ p = 0.2     #Razón de crecimiento de la presa
+ d = 0.1     #Razón de crecimiento del depredador 
 
-  d = -0.73    #Razón de crecimiento de la presa
-  p = 0.35    #Razón de crecimiento del depredador 
-
-  x_result=[]
-  y_result=[]
+ x_result = []
+ y_result = []
 
 #Definir las fórmulas
 def update():
-  global R,d,p,next_x,x,x_result,next_y,y,y_result
-
-  next_x = x + p*R*(x/(x+y))    #Ecuaciones para las presas
-  next_y = y + d*R*(y/(x+y))    #Ecuaciones para los depredadores
-
+  global x,y,x_result,y_result,p,d,R
+  next_x = x + (p*R*x/ (x + y)) #Ecuaciones para las presas
+  next_y = y + (d*R*y/ (x + y)) #Ecuaciones para los depredadores
   x = next_x
   y = next_y
 
 #Añadir cada resultado obtenido de update()
 def observe():
-  global R,d,p,next_x,x,x_result,next_y,y,y_result
+  global x,y,x_result,y_result,p,d,R
   x_result.append(x)
   y_result.append(y)
 
-
 #Realizar las fórmulas y almacenar su resultado n veces (50 veces)
 initialize()
-for step in range(50):
+for step in range(10):
   update()
   observe()
 
-#Mostrar gráficas
-fig = plot(x_result)
-plt.xlabel('Tiempo t(años)')
-plt.ylabel('Pobalción x')
+fig1 = plot(x_result, color="r")
+fig2 = plot(y_result, color="g")
 plt.show()
 
-fig2 = plot(y_result)
+
+fig1 = plot(x_result, color="r")
 plt.show()
 
-#fig3 = plot(x_result)
+fig2 = plot(y_result, color="g")
 plt.show()

@@ -8,10 +8,10 @@ from pylab import *
 def initialize():
  global x,y,x_result,y_result,p,d,R
  R = 1       #Recursos
- x = 0.12    #Población inicial de la presa
- y = 0.2     #Población inicial del depredador
- p = 0.2     #Razón de crecimiento de la presa
- d = 0.1     #Razón de crecimiento del depredador 
+ x = 0.12    #Población inicial de la especie 1
+ y = 0.2     #Población inicial de la especie 2
+ p = 0.2     #Razón de crecimiento de la especie 1
+ d = 0.1     #Razón de crecimiento de la especie 2 
 
  x_result = []
  y_result = []
@@ -19,8 +19,8 @@ def initialize():
 #Definir las fórmulas
 def update():
   global x,y,x_result,y_result,p,d,R
-  next_x = x + (p*R*x/ (x + y)) #Ecuaciones para las presas
-  next_y = y + (d*R*y/ (x + y)) #Ecuaciones para los depredadores
+  next_x = x + (p*R*x/ (x + y)) #Ecuaciones para la especie 1
+  next_y = y + (d*R*y/ (x + y)) #Ecuaciones para la especie 2
   x = next_x
   y = next_y
 
@@ -30,7 +30,7 @@ def observe():
   x_result.append(x)
   y_result.append(y)
 
-#Realizar las fórmulas y almacenar su resultado n veces (50 veces)
+#Realizar las fórmulas y almacenar su resultado n veces (10 veces) Para realizar la normalización
 initialize()
 for step in range(10):
   update()

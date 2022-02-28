@@ -1,0 +1,53 @@
+#Importamos las herramientas necesarias para realizar las gráficas y las operaciones
+import matplotlib.pyplot as plt
+import numpy as np
+from pylab import *
+
+#Funciones necesarias para:
+#Inicializar los valores
+def initialize():
+  global R,d,p,next_x,x,x_result,next_y,y,y_result
+  R = 0.12   #Recursos
+  x = 0.5     #Población inicial de la presa
+  y = 0.35    #Población inicial del depredador
+
+  d = -0.73    #Razón de crecimiento de la presa
+  p = 0.35    #Razón de crecimiento del depredador 
+
+  x_result=[]
+  y_result=[]
+
+#Definir las fórmulas
+def update():
+  global R,d,p,next_x,x,x_result,next_y,y,y_result
+
+  next_x = x + p*R*(x/(x+y))    #Ecuaciones para las presas
+  next_y = y + d*R*(y/(x+y))    #Ecuaciones para los depredadores
+
+  x = next_x
+  y = next_y
+
+#Añadir cada resultado obtenido de update()
+def observe():
+  global R,d,p,next_x,x,x_result,next_y,y,y_result
+  x_result.append(x)
+  y_result.append(y)
+
+
+#Realizar las fórmulas y almacenar su resultado n veces (50 veces)
+initialize()
+for step in range(50):
+  update()
+  observe()
+
+#Mostrar gráficas
+fig = plot(x_result)
+plt.xlabel('Tiempo t(años)')
+plt.ylabel('Pobalción x')
+plt.show()
+
+fig2 = plot(y_result)
+plt.show()
+
+#fig3 = plot(x_result)
+plt.show()

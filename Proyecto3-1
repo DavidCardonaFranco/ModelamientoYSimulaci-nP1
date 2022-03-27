@@ -1,0 +1,51 @@
+#Importamos las herramientas necesarias para realizar las gráficas y las operaciones
+import pylab as p
+import matplotlib.pyplot as plt
+import numpy as np
+
+#Funciones necesarias para:
+#Añadir cada resultado obtenido de las ecuaciones
+def observe(x0,y0):
+  x=x0;y=y0
+  xresult=[x]
+  yresult=[y]
+
+  xresult.append(x)
+  yresult.append(y)
+
+  #Definir las fórmulas de una sola pregunta y respuesta de Romeo y Julieta
+  for t in range(600):
+    dx = -2*x + y
+    dy = -x + 2*y
+    x = x + (0.01*dx/np.sqrt(dx**2+dy**2))  #Ecuaciones para Romeo
+    y = y + (0.01*dy/np.sqrt(dx**2+dy**2))  #Ecuaciones para Julieta
+    xresult.append(x)
+    yresult.append(y)
+    
+  p.plot(xresult,yresult,color='r')
+
+#Mostrar todo el espectro de valores dentro de la gráfica
+def observe1():
+  #Qué tan grande es la gráfica
+  xvalues,yvalues = p.meshgrid(p.arange(-4,4,0.5),p.arange(-4,4,0.5))
+  xdot = -2*xvalues + yvalues
+  ydot = -1*xvalues + 2*yvalues
+  p.streamplot(xvalues,yvalues,xdot,ydot, color = "orange") 
+
+#Llamado a las funciones observe y observe1
+observe(3.5,1)
+observe(3.5,0.75)
+observe(-3.5,-1)
+observe(-3.5,-0.75)
+
+observe1()
+
+#Visualizar eigenvectores o las asíntotas de nuestra gráfica
+A=[[-2,1],[-1,2]]
+λ,v = p.eig(A)
+p.arrow( -v[0, 0], -v[1, 0], v[0, 0], v[1, 0],head_length=10,linestyle = '--', color="black")
+p.arrow(-v[0, 1], -v[1, 1], v[0, 1], v[1, 1],head_length=10,linestyle = '--' , color="black")
+
+p.xlabel("Romeo")
+p.ylabel("Julieta")
+p.show()

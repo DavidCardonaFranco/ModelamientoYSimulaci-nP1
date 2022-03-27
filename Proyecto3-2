@@ -1,0 +1,41 @@
+#Importamos las herramientas necesarias para realizar las gráficas y las operaciones
+import pylab as p
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+#Funciones necesarias para:
+#Añadir cada resultado obtenido de las ecuaciones
+def visualizar(x0,y0):
+  x=x0;y=y0
+  xresult=[x]
+  yresult=[y]
+
+  xresult.append(x)
+  yresult.append(y)
+  #Definir las fórmulas de los sentimientos de Romeo y Julieta
+  for t in range(4444):
+    dx = -0.20*x + -1*y
+    dy = 1*x + 0*y
+    x = x + (0.01*dx/np.sqrt(dx**2+dy**2))
+    y = y + (0.01*dy/np.sqrt(dx**2+dy**2))
+    xresult.append(x)
+    yresult.append(y)
+  p.plot(xresult,yresult,color='r')
+
+#Mostrar todo el espectro de valores dentro de la gráfica
+def observe():
+ #Qué tan grande es la gráfica
+  xvalues,yvalues = p.meshgrid(p.arange(-7.5,7.5,0.5),p.arange(-10,10,0.5))
+  xdot = -0.20*xvalues + -1*yvalues
+  ydot = 1*xvalues + 0*yvalues
+  p.streamplot(xvalues,yvalues,xdot,ydot)
+
+
+visualizar(0,4)
+observe()
+
+p.xlabel("Sentimientos  Romeo")
+p.ylabel("Sentimientos Julieta")
+p.show()
+

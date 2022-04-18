@@ -1,0 +1,62 @@
+#Importamos las herramientas necesarias para realizar las gráficas y las operaciones
+from IPython.core.display import Image
+import matplotlib
+from pylab import *
+
+#Inicialización de valores 
+n = 50    #Tamaño de las gráficas nxn
+p = 0.5   #Probabilidad pánico
+NoMin = 1 #Número mínimo de vecinos excitados
+k = 4     #Refractario
+
+Steps = 10; Images = int(Steps/5) #Iteraciones
+
+config = zeros([n + 2, n + 2]) #Cerrado
+
+#Funciones necesarias para:
+#Inicializar el arreglo de espacios inactivos (0) y con p determinar excitabilidad (1)
+def initialize():
+  global config, nextconfig
+  config = zeros([n + 2, n + 2])
+  for x in range(1, n + 1):
+    for y in range(1, n + 1):
+      config[x, y] = 1 if random() < p else 0
+  nextconfig = zeros([n + 2, n + 2])
+
+#Unificación de las reglas para el seguimiento del modelo
+def update():
+  global config, nextconfig, t, NoMin, n, k
+  
+  for x in range(1, n + 1):
+    for y in range(1, n + 1):
+      count = 0
+      for dx in [-1, 0, 1]:
+        for dy in [-1, 0, 1]:
+          if abs(dx) + abs(dy) != 0:
+            if config[(x+dx),(y+dy)] == 1:
+              count += 1
+      if config[x, y] == 0 and count >= NoMin:
+        nextconfig[x, y] = 1
+      if config[x, y] == 1 :
+        nextconfig[x, y] = config[x, y]+1 
+      if config[x, y] == k :
+        nextconfig[x, y] = 0
+  nextconfig = config
+  
+#Añadir cada resultado obtenido de las especificaciones del modelo
+def observe():
+  global config
+  cla() 
+  imshow(config, vmin = 0, vmax = 1, cmap = cm.magma)
+
+
+#Visualizar gráficas
+plt.subplots(figsize = (10, 12)); plt.suptitle("CA modelo excitable", fontsize = 18, y = 0.95)
+
+initialize(); i = 0
+for t in range(Steps + 1):
+  if t % Images == 0:
+    i = i + 1; subplot(2, 3, i); observe()
+    title('t = '+str(t)); ylabel('y', size = 20); xlabel('x', size = 20)
+  update()
+show()

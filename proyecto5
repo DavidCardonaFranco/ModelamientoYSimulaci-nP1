@@ -1,1 +1,65 @@
-hola
+import matplotlib
+from pylab import *
+from matplotlib import animation
+from IPython.core.display import display, HTML
+
+n = 100     # Tamañao: n * n
+Dh = 1. / n # División Espacaial
+Dt = 0.02   # Paso del Tiempo
+Steps = 100
+Images = int(Steps/5)
+a, b, c, d, h, k ,f = 1, -1., 0, -1.5, 1., 1 , 1
+
+Du = 0.0001 
+Dv = 0.0004 #constante de difusión de cAMP (monofosfato de adenosina cíclico).
+μ = 0.0001  #parámetro para la movilidad celular.
+χ = 0.001   #parámetro para la quimiotaxis celular.
+
+
+Framesu = zeros([Steps + 1, n, n])
+Framesv = zeros([Steps + 1, n, n])
+
+def initialize():
+    global u, v, nextu, nextv
+    u = zeros([n, n])
+    v = zeros([n, n])
+    for x in range(n):
+        for y in range(n):
+            u[x, y] = 1. + uniform(-0.03, 0.03) 
+            v[x, y] = 1. + uniform(-0.03, 0.03) 
+    nextu = zeros([n, n])
+    nextv = zeros([n, n])
+    
+def observe():
+    global u, v, nextu, nextv
+    subplot(1, 2, 1)
+    cla()
+    imshow(u, cmap = 'magma')
+    subplot(1, 2, 2)
+    cla()
+    imshow(v,  cmap = 'magma')
+    show()
+    
+def update():
+    global u, v, nextu, nextv
+    nextu[:,:] = u[:,:] ; nextv[:,:] = v[:,:]
+    for x in range(n):
+        for y in range(n):
+            uC, uR, uL, uU, uD = u[x,y], u[(x+1)%n,y], u[(x-1)%n,y], \
+                                 u[x,(y+1)%n], u[x,(y-1)%n]
+            vC, vR, vL, vU, vD = v[x,y], v[(x+1)%n,y], v[(x-1)%n,y], \
+                                 v[x,(y+1)%n], v[x,(y-1)%n]
+            uLap = (uR + uL + uU + uD - 4 * uC) / (Dh**2)
+            vLap = (vR + vL + vU + vD - 4 * vC) / (Dh**2)
+            nextu[x,y] = uC + ((μ* uLap) - (χ* uL*(a*uL*c)))* Dt
+            nextv[x,y] = vC + ((Dv * vLap) + ((f*a) - (k*c))) * Dt
+            #nextu[x,y] = uC + (a*(uC-h) + b*(vC-k) + Du * uLap) * Dt
+            #nextv[x,y] = vC + (c*(uC-h) + d*(vC-k) + Dv * vLap) * Dt
+
+    u[:,:] = nextu[:,:] 
+    v[:,:] = nextv[:,:]
+
+initialize()
+for t in range(Steps):
+  update()
+  if t%Images==0: observe()

@@ -1,0 +1,43 @@
+import matplotlib
+from pylab import *
+import networkx as nx
+
+Steps = 500; Images = int(Steps/5)
+d = 6
+n = 8
+
+def initialize():
+    global g, nextg,pos
+    g = nx.random_regular_graph(d, n)
+    pos = nx.spring_layout(g)
+    for i in list(g.nodes()):
+        g.nodes[i]['theta'] = 2 * pi * random()
+        g.nodes[i]['omega'] = 1. + uniform(-0.05, 0.05)
+    nextg = g.copy()
+    
+def observe():
+    global g, nextg,pos
+    cla()
+    nx.draw(g, cmap = "magma", vmin = -1, vmax = 1,with_labels=True,
+            node_color = [sin(g.nodes[i]['theta']) for i in list(g.nodes())],
+            pos = pos)
+    show()
+
+alpha = 1 # coupling strength
+Dt = 0.01 # Delta t
+
+def update():
+    global g, nextg
+    for i in list(g.nodes()):
+        theta_i = g.nodes[i]['theta']
+        nextg.nodes[i]['theta'] = theta_i + (g.nodes[i]['omega'] + alpha * ( \
+            sum(sin(g.nodes[j]['theta'] - theta_i) for j in g.neighbors(i)) \
+            / g.degree(i))) * Dt
+    g, nextg = nextg, g
+
+
+initialize()
+for i in range(Steps):
+  update()
+  if i%Images == 0:
+    observe()
